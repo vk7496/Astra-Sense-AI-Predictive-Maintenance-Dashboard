@@ -1,4 +1,4 @@
-# AstraSense™ – Industrial AI Predictive Maintenance Dashboard
+# AstraSense™ - Industrial AI Predictive Maintenance Dashboard
 
 ## 📘 Introduction
 Welcome to **AstraSense™ Predictive Intelligence** — a lightweight, real-time AI system for industrial equipment monitoring and predictive failure detection.
@@ -12,6 +12,27 @@ This demo includes:
 ---
 
 import streamlit as st
+import os
+from openai import OpenAI
+
+# Initialize OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+def generate_ai_insight(vibration, temperature):
+    prompt = f"""
+    Analyze the following industrial sensor readings and provide insights:
+    - Vibration data: {vibration}
+    - Temperature data: {temperature}
+    Provide anomaly detection and maintenance recommendations.
+    """
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4.1-mini",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return response.choices[0].message["content"]
+    except Exception:
+        return "AI Insight unavailable (fallback mode)."
 import numpy as np
 import pandas as pd
 import time
