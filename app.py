@@ -15,14 +15,15 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 def generate_ai_insight(vibration, temperature):
     prompt = f"""
     You are an industrial predictive‑maintenance AI.
-    Analyze the following sensor readings and give:
+    Analyze the following industrial sensor readings and provide insights:
     - Condition summary
     - Likelihood of failure (0–100%)
     - Recommended action
 
     Sensor data:
     • Vibration: {vibration}
-    • Temperature: {temperature}
+    • Temperature: {temperature} 
+    provide anomaly detection and maintenance recommendations.
     """
 
     try:
@@ -30,7 +31,7 @@ def generate_ai_insight(vibration, temperature):
             model="gpt-4.1-mini",
             messages=[{"role": "user", "content": prompt}]
         )
-        return response.choices[0].message["content"]
+        return response.choices[0].message.content
     except Exception as e:
         return f"AI Insight unavailable. Error: {str(e)}"
 
